@@ -51,7 +51,13 @@
     { v: 5, label: "非常符合" },
   ];
 
-  /** @param {Record<string, number>} scores 0-100 */
+  /**
+   * @param {Record<string, number>} scores
+   * @returns {{
+   *   title: string, sub: string, match: number,
+   *   deepInsight: string, hook: string, tags: string[]
+   * }}
+   */
   function pickArchetype(scores) {
     const c = scores.cognition;
     const p = scores.practice;
@@ -64,71 +70,136 @@
     if (hi(c) && hi(p) && hi(d) && hi(h)) {
       return {
         title: "全域协作者",
-        sub: "四轴均衡偏高——你像一支编好曲的乐队，知道何时让人声、何时让合成器上场。",
+        sub: "四轴都在高位——你更像在「编排人机分工」，而不是偶尔问一句。",
         match: Math.round(88 + (avg - 70) * 0.4),
+        deepInsight:
+          "你同时具备理解边界、动手交付、领域校准与流程固化四类能力。风险不在『会不会用』，而在『过度依赖默认答案』：建议把关键决策与复核点写进固定清单，让优势可复制、可审计。对外协作时，你往往能成为团队的『人机接口』——这是稀缺资产。",
+        hook: "四轴均衡偏高：你已经在用 AI 做「系统」，而不是做「热闹」。",
+        tags: ["系统编排", "可交付", "领域感", "习惯固化"],
       };
     }
     if (hi(c) && lo(p)) {
       return {
         title: "星图测绘员",
-        sub: "脑子里的地图很清晰，但脚步还在试探——该把认知翻译成可重复的练习回合。",
+        sub: "概念清晰，但高频练习仍不足——想法在天上，手还没形成肌肉记忆。",
         match: Math.round(72 + c * 0.15),
+        deepInsight:
+          "你擅长建立心智模型：知道模型会错、知道何时该 RAG、知道风险点在哪里。真正卡住你的，往往是『启动成本』：把知识变成每周三次、每次 20 分钟的固定练习，比再读十篇概念文更有效。你的特征是先想明白再动手——下一步要让『动手』也变成默认动作。",
+        hook: "脑子已经上路，手还需要固定练习回合。",
+        tags: ["概念强", "练习缺口", "需节奏", "可塑性强"],
       };
     }
     if (hi(p) && lo(c)) {
       return {
         title: "手感型游牧民",
-        sub: "你靠直觉打得很快，偶尔会被幻觉绊一下——值得补一层「模型如何犯错」的底层感。",
+        sub: "你打得快、试得多；偶尔在『为什么翻车』上少一层解释框架。",
         match: Math.round(70 + p * 0.18),
+        deepInsight:
+          "你的优势是迭代速度与场景嗅觉：你能快速换工具、换提示、换工作流。短板是当结果异常时，解释路径偏『经验』而非『机制』——这会让你在团队协作与培训他人时吃亏。补一层底层认知，不是为了变学术，而是为了让试错更省时间、复盘更可教。",
+        hook: "手感敏锐，补上「机制感」就能从快变成稳。",
+        tags: ["高频实践", "迭代快", "机制感待补", "场景嗅觉"],
       };
     }
     if (d >= c && d >= p && d >= h && d >= 62) {
       return {
         title: "垂直领域猎手",
-        sub: "专业场景是你的主场；把领域资产产品化，你会强得不像「只会聊天」的那种用法。",
+        sub: "专业场景是你的主场：你知道什么叫『像内行一样交付』。",
         match: Math.round(75 + d * 0.2),
+        deepInsight:
+          "你把 AI 当『领域加速器』而不是聊天玩具：术语、格式、边界条件、合规风险都在你的雷达里。下一步是把个人经验资产化：模板、样例库、错误类型清单——让别人也能站在你的肩膀上。若认知或习惯分数偏低，优先补『模型翻车模式』与『团队规范』，避免个人强、系统弱。",
+        hook: "专业纵深突出：把个人绝活沉淀成可复用资产。",
+        tags: ["领域纵深", "交付标准", "资产化", "协作规范"],
       };
     }
     if (h >= c && h >= p && h >= d && h >= 62) {
       return {
         title: "流程建筑师",
-        sub: "你擅长把协作固化成习惯与规范——下一步是把个人 SOP 变成团队可复制的版本。",
+        sub: "你擅长把协作变成可重复的节奏与规范——这是组织级能力的前身。",
         match: Math.round(74 + h * 0.2),
+        deepInsight:
+          "你天然关注可持续：模板、复盘、边界、团队约定。你的风险是『流程正确但产出平庸』——当实践或专业不足时，规范会变成空转。建议每个流程节点绑定一个可验收的产出样例，让习惯与结果对齐。你很适合成为团队里的『协作标准制定者』。",
+        hook: "习惯与规范很强：让流程对准可验收结果。",
+        tags: ["节奏感", "规范意识", "复盘", "可规模化"],
       };
     }
     if (lo(c) && lo(p) && lo(d) && lo(h)) {
       return {
         title: "观测席常客",
-        sub: "你还在围观阶段没关系——从一个小而具体的重复任务开始，连打七天卡就会换画风。",
+        sub: "你还在围观区——不是能力问题，多半是启动场景还没被选中。",
         match: Math.round(55 + avg * 0.35),
+        deepInsight:
+          "这份画像常见于『知道很多产品，但没绑到高频任务』的阶段。你的突破点不是再学一个工具，而是选一个每周必做的小事：邮件、纪要、表格、翻译……把它连续用满两周。四轴会一起被拖起来，因为信心来自具体胜利，而不是抽象兴趣。",
+        hook: "从一个小而具体的高频任务开始，比再收藏一篇攻略更有用。",
+        tags: ["待启动", "高频场景", "小胜利", "可快速提升"],
       };
     }
     if (c + p > d + h + 15) {
       return {
         title: "双引擎试飞员",
-        sub: "认知与实践走在前面，专业沉淀与习惯系统可以慢慢「收网」成资产。",
+        sub: "认知与实践走在前面；领域沉淀与习惯系统还在追赶。",
         match: Math.round(78 + (c + p) * 0.1),
+        deepInsight:
+          "你属于『先飞起来再调参』的类型：愿意试、也愿意想。接下来最值得做的是把试飞记录变成资产：哪些任务值得自动化、哪些必须人工终审、哪些提示词可复用。把『专业』与『习惯』补上来，你会从个人高效走向团队可复制。",
+        hook: "认知+实践双高：把试飞记录沉淀成团队能用的资产。",
+        tags: ["学习曲线陡", "试飞频繁", "待沉淀", "爆发力强"],
       };
     }
     if (d + h > c + p + 15) {
       return {
         title: "阵地工兵",
-        sub: "你已经把 AI 嵌进领域与流程；补一点底层直觉，决策会更快、更省试错成本。",
+        sub: "领域与流程已扎根；底层直觉与日常练习量可再抬一档。",
         match: Math.round(77 + (d + h) * 0.1),
+        deepInsight:
+          "你更相信『在工作里用起来』而不是追新。你的风险是工具迭代快时，更新滞后；补一点认知与实践频率，会让你在选型、排错、培训他人时更省力。你适合作为业务侧的『落地推动者』，而不是概念传播者。",
+        hook: "落地与规范强：补一点底层直觉，选型排错会更省力。",
+        tags: ["落地派", "业务侧", "稳健", "可补认知"],
       };
     }
     return {
       title: "混态进化体",
       sub: "没有单一标签能框住你——你在多轴之间摆动，正是继续精细调参的黄金期。",
       match: Math.round(70 + avg * 0.25),
+      deepInsight:
+        "你的四轴呈现『有长有短』的混合状态：这意味着你正处于快速塑形期。建议只看最低的二维做 14 天小实验，其它维度先维持。混态不是混乱，而是说明你还没把偏好固化成路径——这时候的刻意练习回报率最高。",
+      hook: "多轴混搭：用 14 天小实验专攻最短板，收益最大。",
+      tags: ["塑形期", "不均衡", "高回报练习", "待定型"],
     };
+  }
+
+  /** @param {keyof typeof DIMENSIONS} k @param {number} v 0-100 */
+  function dimensionNarrative(k, v) {
+    const L = DIMENSIONS[k].label;
+    if (v < 40) {
+      const map = {
+        cognition: `${L}偏低：你可能还在用「聊天」替代「方法」。建议先建立最小概念骨架：概率输出、窗口、幻觉与核验。`,
+        practice: `${L}偏低：工具接触不少，但尚未嵌入高频真实产出。请绑定一个每周重复的具体任务练手。`,
+        domain: `${L}偏低：通用对话多，领域语料与标准少。把术语表、样例与禁区写进提示或附件，会立刻改观。`,
+        habit: `${L}偏低：即兴使用为主，缺少模板与复盘。从「保存三条好用提示词」开始即可。`,
+      };
+      return map[k];
+    }
+    if (v < 68) {
+      const map = {
+        cognition: `${L}中等：关键概念有印象，但未形成稳定判断。用「同一任务三种提示」做对照实验，进步最快。`,
+        practice: `${L}中等：能完成不少任务，但质量波动。给任务加验收标准与反面例子，会显著压缩返工。`,
+        domain: `${L}中等：能在专业场景使用 AI，但资产沉淀不足。建议记录三类坏案例：事实错、逻辑错、合规风险。`,
+        habit: `${L}中等：有一定节奏，但未体系化。把个人 SOP 画成三步流程图，再决定哪步可自动化。`,
+      };
+      return map[k];
+    }
+    const map = {
+      cognition: `${L}突出：你能讨论边界与机制，而不只讨论功能。适合承担团队里的选型与风险解释角色。`,
+      practice: `${L}突出：你能稳定把 AI 用在交付链上。注意别在低价值任务上过度自动化，保持 ROI 意识。`,
+      domain: `${L}突出：你能把 AI 输出校准到「像这一行的人写的」。下一步是资产化与同伴培训。`,
+      habit: `${L}突出：你的协作方式可复盘、可迭代、可教别人。这是从个人到团队的关键跳板。`,
+    };
+    return map[k];
   }
 
   function clamp(n, a, b) {
     return Math.max(a, Math.min(b, n));
   }
 
-  /** @param {number[]} answers 1-5 per question in order */
   function computeScores(answers) {
     const sums = { cognition: 0, practice: 0, domain: 0, habit: 0 };
     const counts = { cognition: 0, practice: 0, domain: 0, habit: 0 };
@@ -139,9 +210,8 @@
         counts[q.dim] += 1;
       }
     });
-    /** @type {Record<string, number>} */
     const out = {};
-    (Object.keys(sums)).forEach((k) => {
+    Object.keys(sums).forEach((k) => {
       const avg = counts[k] ? sums[k] / counts[k] : 1;
       out[k] = Math.round(((avg - 1) / 4) * 100);
     });
@@ -156,20 +226,20 @@
 
   const RECOMMEND = {
     cognition: [
-      "短课程：概率输出、上下文窗口、RAG 与智能体分工（各 1 篇精读 + 手绘一张概念图）。",
-      "练习：同一问题分别用「零示例 / 少示例 / 给反例」三种提示对比输出差异。",
+      "精读 1 篇讲清「概率输出 / 上下文 / RAG / 智能体」的文章，并手绘一张概念关系图。",
+      "同一问题分别用「零示例 / 少示例 / 给反例」三种提示各跑一遍，对照差异写三行结论。",
     ],
     practice: [
-      "给自己定一个「每周 3 次、每次 20 分钟」的交付型小任务（邮件、小结、脚本均可）。",
-      "建立「提示词迭代日志」：记录原提示、修改点、结果变化各一行。",
+      "锁定「每周 3 次、每次 20 分钟」的交付型小任务（邮件、纪要、脚本均可），连续两周不打断。",
+      "建一页「提示词迭代日志」：原提示、改动点、结果变化各一行，只记不评判。",
     ],
     domain: [
-      "整理一份「领域专用术语表 + 3 个标杆样例」作为固定系统提示或附件。",
-      "选一条专业工作流，画出人机分工泳道图，标出必须人工审核的节点。",
+      "整理「领域术语表 + 3 个标杆样例 + 3 条禁区」作为固定系统提示或附件。",
+      "选一条真实工作流画人机泳道图，标出必须人工复核的节点与依据。",
     ],
     habit: [
-      "把最高频场景做成模板库（命名规范 + 标签），每周只新增 1 条精品。",
-      "与同伴约定最小合规：哪些数据不进公网模型、成品如何署名与复核。",
+      "把最高频场景做成模板库（命名 + 标签），每周只新增 1 条「验证过好用」的条目。",
+      "与同伴约定最小规范：哪些数据不进公网模型、成品如何署名与复核。",
     ],
   };
 
@@ -179,9 +249,7 @@
       const pair = RECOMMEND[k];
       if (pair) lines.push(pair[0], pair[1]);
     });
-    if (!lines.length) {
-      lines.push("维持现状的同时，尝试教别人一遍——教学是最好的压力测试。");
-    }
+    if (!lines.length) lines.push("教别人一遍你的协作流程——能讲清楚，才算真掌握。");
     return lines;
   }
 
@@ -216,7 +284,7 @@
         gd += (i === 0 ? "M" : "L") + x.toFixed(2) + "," + y.toFixed(2) + " ";
       });
       gd += "Z";
-      grid.push(`<path d="${gd}" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>`);
+      grid.push(`<path d="${gd}" fill="none" stroke="rgba(120,53,15,0.1)" stroke-width="1"/>`);
     }
 
     const axis = angles
@@ -225,16 +293,38 @@
         const y2 = cy + rMax * Math.sin(ang);
         const lx = cx + (rMax + 14) * Math.cos(ang);
         const ly = cy + (rMax + 14) * Math.sin(ang);
-        const t = `<text x="${lx}" y="${ly}" fill="#8b92a8" font-size="9" text-anchor="middle" dominant-baseline="middle">${labels[i]}</text>`;
-        return `<line x1="${cx}" y1="${cy}" x2="${x2}" y2="${y2}" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>${t}`;
+        const t = `<text x="${lx}" y="${ly}" fill="#78716c" font-size="9" font-weight="600" text-anchor="middle" dominant-baseline="middle">${labels[i]}</text>`;
+        return `<line x1="${cx}" y1="${cy}" x2="${x2}" y2="${y2}" stroke="rgba(234,88,12,0.2)" stroke-width="1"/>${t}`;
       })
       .join("");
 
-    const fill = `<path d="${d}" fill="rgba(62,232,200,0.2)" stroke="#3ee8c8" stroke-width="1.5"/>`;
+    const fill = `<path d="${d}" fill="rgba(249,115,22,0.22)" stroke="#ea580c" stroke-width="1.8" stroke-linejoin="round"/>`;
     return grid.join("") + axis + fill;
   }
 
-  // --- UI ---
+  function renderBars(scores) {
+    const el = document.getElementById("bars");
+    el.innerHTML = "";
+    const keys = ["cognition", "practice", "domain", "habit"];
+    keys.forEach((k) => {
+      const row = document.createElement("div");
+      row.className = "bar-row";
+      row.innerHTML = `<span>${DIMENSIONS[k].short}</span><div class="bar-track"><div class="bar-fill" style="width:0%"></div></div><span>${scores[k]}</span>`;
+      el.appendChild(row);
+      requestAnimationFrame(() => {
+        row.querySelector(".bar-fill").style.width = scores[k] + "%";
+      });
+    });
+  }
+
+  function formatShareDate() {
+    const t = new Date();
+    const y = t.getFullYear();
+    const m = String(t.getMonth() + 1).padStart(2, "0");
+    const d = String(t.getDate()).padStart(2, "0");
+    return `${y}-${m}-${d}`;
+  }
+
   const views = {
     landing: document.getElementById("view-landing"),
     quiz: document.getElementById("view-quiz"),
@@ -260,10 +350,7 @@
   }
 
   function saveState() {
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify({ answers, index, savedAt: Date.now() })
-    );
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ answers, index, savedAt: Date.now() }));
   }
 
   function clearState() {
@@ -330,14 +417,39 @@
   function renderResult() {
     const scores = computeScores(answers);
     const arch = pickArchetype(scores);
+
     document.getElementById("archetype-title").textContent = arch.title;
     document.getElementById("archetype-sub").textContent = arch.sub;
     document.getElementById("match-pct").textContent = clamp(arch.match, 52, 97) + "%";
+    document.getElementById("insight-deep").textContent = arch.deepInsight;
+
+    document.getElementById("share-date").textContent = formatShareDate();
+    document.getElementById("share-archetype").textContent = arch.title;
+    document.getElementById("share-hook").textContent = arch.hook;
+
+    const shareScores = document.getElementById("share-scores");
+    shareScores.innerHTML = "";
+    ["cognition", "practice", "domain", "habit"].forEach((k) => {
+      const div = document.createElement("div");
+      div.className = "share-score-item";
+      div.innerHTML = `<span class="share-score-item__v">${scores[k]}</span><span class="share-score-item__k">${DIMENSIONS[k].short}</span>`;
+      shareScores.appendChild(div);
+    });
+
+    const tagsEl = document.getElementById("share-tags");
+    tagsEl.innerHTML = "";
+    arch.tags.forEach((t) => {
+      const s = document.createElement("span");
+      s.className = "tag-chip";
+      s.textContent = t;
+      tagsEl.appendChild(s);
+    });
 
     const weak = weakestDims(scores);
     const weakLabels = weak.map((k) => DIMENSIONS[k].label).join("、");
+    const strong = Object.entries(scores).sort((a, b) => b[1] - a[1])[0];
     document.getElementById("remark").textContent =
-      `相对短板集中在：${weakLabels}。下面建议按「先补短板、再放大优势」的顺序尝试即可。`;
+      `当前最突出的维度是「${DIMENSIONS[strong[0]].label}」（${strong[1]}）。相对更需要刻意练习的是「${weakLabels}」。这不代表你弱，而表示下一阶段性价比最高的投入方向——先补短板，再把长板做成可教别人的方法。`;
 
     const tipsEl = document.getElementById("tips");
     tipsEl.innerHTML = "";
@@ -345,6 +457,14 @@
       const li = document.createElement("li");
       li.textContent = `${DIMENSIONS[k].label}：${RECOMMEND[k][0]}`;
       tipsEl.appendChild(li);
+    });
+
+    const narratives = document.getElementById("dim-narratives");
+    narratives.innerHTML = "";
+    ["cognition", "practice", "domain", "habit"].forEach((k) => {
+      const li = document.createElement("li");
+      li.innerHTML = `<strong>${DIMENSIONS[k].label}（${scores[k]}）</strong> ${dimensionNarrative(k, scores[k])}`;
+      narratives.appendChild(li);
     });
 
     const actionsEl = document.getElementById("actions");
@@ -364,8 +484,11 @@
     });
 
     document.getElementById("radar").innerHTML = radarPath(scores);
+    renderBars(scores);
+
     saveLastResultSnapshot();
     clearState();
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function copySummary() {
@@ -378,8 +501,11 @@
     const arch = pickArchetype(scores);
     const lines = [
       `【AIRADAR】AI 协作力扫描`,
+      `日期：${formatShareDate()}`,
       `原型：${arch.title}`,
       `匹配度约 ${clamp(arch.match, 52, 97)}%`,
+      `一句话：${arch.hook}`,
+      `标签：${arch.tags.join(" · ")}`,
       `四轴：认知 ${scores.cognition} · 实践 ${scores.practice} · 专业 ${scores.domain} · 习惯 ${scores.habit}`,
       "",
       "本摘要由网页生成，仅供自我反思与教学使用。",

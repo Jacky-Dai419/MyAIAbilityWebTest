@@ -3,26 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="description" content="AI 协作力全景扫描 — 多维度测评你的 AI 认知、实践、专业与习惯，生成可行动的改进建议。" />
+  <meta name="theme-color" content="#ea580c" />
+  <meta name="description" content="AI 协作力全景扫描 — 多维度测评认知、实践、专业与习惯，生成可分享的可视化报告。" />
   <title>AIRADAR · AI 协作力扫描</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="noise" aria-hidden="true"></div>
+  <div class="bg-blobs" aria-hidden="true"></div>
   <header class="topbar">
-    <span class="logo">AIRADAR</span>
+    <div class="brand">
+      <span class="logo-mark" aria-hidden="true"></span>
+      <span class="logo">AIRADAR</span>
+    </div>
     <span class="tagline">AI 协作力 · 全景扫描</span>
   </header>
 
   <main id="app">
-    <!-- Landing -->
     <section id="view-landing" class="view active">
       <div class="hero">
-        <p class="eyebrow">不是性格测试，是协作体检</p>
-        <h1>你的 AI 使用方式<br /><span class="grad">是「游牧」还是「筑城」？</span></h1>
+        <p class="eyebrow">不是性格测试，是一次协作体检</p>
+        <h1>看清你与 AI 的<br /><span class="grad">协作方式与潜力边界</span></h1>
         <p class="lede">
-          四轴量化：<strong>认知</strong>、<strong>实践</strong>、<strong>专业</strong>、<strong>习惯</strong>。
-          答完约 3 分钟，得到你的协作原型 + 可落地的学习路径提示。
+          从<strong>认知、实践、专业、习惯</strong>四轴打分，约 3 分钟完成。
+          生成可截图分享的报告卡，并附可执行的行动提示。
         </p>
         <div class="cta-row">
           <button type="button" class="btn primary" id="btn-start">开始扫描</button>
@@ -30,13 +33,12 @@
           <button type="button" class="btn ghost" id="btn-last-result" hidden>查看上次结果</button>
         </div>
         <ul class="bullets">
-          <li>纯前端，答案仅存本机浏览器</li>
-          <li>适合直播破冰、工作坊自检、个人知识盘点</li>
+          <li>数据仅存本机浏览器，无需登录</li>
+          <li>适合工作坊破冰、直播互动与个人复盘</li>
         </ul>
       </div>
     </section>
 
-    <!-- Quiz -->
     <section id="view-quiz" class="view">
       <div class="quiz-head">
         <button type="button" class="link-back" id="btn-back-home">← 首页</button>
@@ -45,7 +47,7 @@
         </div>
         <span class="progress-text" id="progress-text">0 / 0</span>
       </div>
-      <p class="quiz-hint" id="quiz-hint">请诚实作答——没有标准答案，只有更清醒的自画像。</p>
+      <p class="quiz-hint">按真实状态选择即可——这份报告的价值，来自诚实而非「满分」。</p>
       <article class="card question-card">
         <span class="q-dim" id="q-dim"></span>
         <h2 class="q-text" id="q-text"></h2>
@@ -57,28 +59,62 @@
       </div>
     </section>
 
-    <!-- Results -->
     <section id="view-result" class="view">
+      <p class="section-label">结果总览</p>
+
+      <article class="share-snapshot" id="share-snapshot" aria-label="可截图分享的报告卡">
+        <header class="share-snapshot__head">
+          <span class="share-snapshot__brand">AIRADAR</span>
+          <span class="share-snapshot__badge" id="share-date"></span>
+        </header>
+        <h2 class="share-snapshot__title" id="share-archetype"></h2>
+        <p class="share-snapshot__hook" id="share-hook"></p>
+        <div class="share-snapshot__scores" id="share-scores"></div>
+        <div class="share-snapshot__tags" id="share-tags"></div>
+        <p class="share-snapshot__foot">仅供学习娱乐与自我反思 · 非职业测评</p>
+      </article>
+
+      <p class="hint-screenshot">提示：将上方「报告卡」区域截图，即可用于社群或课件分享。</p>
+
       <div class="result-hero">
-        <p class="eyebrow">你的协作原型</p>
+        <p class="eyebrow">深度解读</p>
         <h1 class="archetype-title" id="archetype-title"></h1>
         <p class="archetype-sub" id="archetype-sub"></p>
-        <div class="match-pill"><span id="match-label">综合匹配度</span> <strong id="match-pct">—</strong></div>
+        <div class="match-pill"><span id="match-label">原型匹配度</span> <strong id="match-pct">—</strong></div>
       </div>
 
+      <article class="card insight-card">
+        <h3>洞察：你当下的协作特征</h3>
+        <p class="insight-deep" id="insight-deep"></p>
+      </article>
+
       <div class="grid-2">
-        <article class="card">
+        <article class="card viz-card">
           <h3>四轴雷达</h3>
           <div class="radar-wrap">
             <svg id="radar" viewBox="0 0 200 200" aria-label="四维度雷达图"></svg>
           </div>
+        </article>
+        <article class="card viz-card">
+          <h3>四轴得分</h3>
+          <div class="bars" id="bars" aria-label="四维度条形图"></div>
           <ul class="dim-list" id="dim-list"></ul>
+        </article>
+      </div>
+
+      <article class="card wide">
+        <h3>各维度一句话画像</h3>
+        <ul class="dim-narratives" id="dim-narratives"></ul>
+      </article>
+
+      <div class="grid-2">
+        <article class="card">
+          <h3>优先补强</h3>
+          <ul class="tips" id="tips"></ul>
         </article>
         <article class="card">
           <h3>系统备注</h3>
           <p class="remark" id="remark"></p>
-          <h3 class="mt">优先补强</h3>
-          <ul class="tips" id="tips"></ul>
         </article>
       </div>
 
@@ -88,17 +124,17 @@
       </article>
 
       <div class="share-row">
-        <button type="button" class="btn primary" id="btn-copy">复制结果摘要</button>
+        <button type="button" class="btn primary" id="btn-copy">复制文字摘要</button>
         <button type="button" class="btn ghost" id="btn-retry">重新扫描</button>
       </div>
       <p class="disclaimer">
-        仅供自我反思与教学娱乐，不构成职业测评或投资建议。真正的能力在持续练习里长出来。
+        仅供自我反思与教学娱乐，不构成职业测评或投资建议。能力在练习与复盘里增长。
       </p>
     </section>
   </main>
 
   <footer class="footer">
-    <span>AIRADAR · 静态页可部署至 Cloudflare Pages / GitHub Pages</span>
+    <span>AIRADAR · 可部署于 Cloudflare Pages / Gitee Pages 等静态托管</span>
   </footer>
 
   <script src="app.js"></script>
