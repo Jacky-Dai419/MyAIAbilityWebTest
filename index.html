@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="AI 协作力全景扫描 — 多维度测评你的 AI 认知、实践、专业与习惯，生成可行动的改进建议。" />
+  <title>AIRADAR · AI 协作力扫描</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <header class="topbar">
+    <span class="logo">AIRADAR</span>
+    <span class="tagline">AI 协作力 · 全景扫描</span>
+  </header>
+
+  <main id="app">
+    <!-- Landing -->
+    <section id="view-landing" class="view active">
+      <div class="hero">
+        <p class="eyebrow">不是性格测试，是协作体检</p>
+        <h1>你的 AI 使用方式<br /><span class="grad">是「游牧」还是「筑城」？</span></h1>
+        <p class="lede">
+          四轴量化：<strong>认知</strong>、<strong>实践</strong>、<strong>专业</strong>、<strong>习惯</strong>。
+          答完约 3 分钟，得到你的协作原型 + 可落地的学习路径提示。
+        </p>
+        <div class="cta-row">
+          <button type="button" class="btn primary" id="btn-start">开始扫描</button>
+          <button type="button" class="btn ghost" id="btn-resume" hidden>继续上次</button>
+          <button type="button" class="btn ghost" id="btn-last-result" hidden>查看上次结果</button>
+        </div>
+        <ul class="bullets">
+          <li>纯前端，答案仅存本机浏览器</li>
+          <li>适合直播破冰、工作坊自检、个人知识盘点</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Quiz -->
+    <section id="view-quiz" class="view">
+      <div class="quiz-head">
+        <button type="button" class="link-back" id="btn-back-home">← 首页</button>
+        <div class="progress-wrap">
+          <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        <span class="progress-text" id="progress-text">0 / 0</span>
+      </div>
+      <p class="quiz-hint" id="quiz-hint">请诚实作答——没有标准答案，只有更清醒的自画像。</p>
+      <article class="card question-card">
+        <span class="q-dim" id="q-dim"></span>
+        <h2 class="q-text" id="q-text"></h2>
+        <div class="likert" id="likert"></div>
+      </article>
+      <div class="quiz-foot">
+        <button type="button" class="btn ghost" id="btn-prev" disabled>上一题</button>
+        <button type="button" class="btn primary" id="btn-next" disabled>下一题</button>
+      </div>
+    </section>
+
+    <!-- Results -->
+    <section id="view-result" class="view">
+      <div class="result-hero">
+        <p class="eyebrow">你的协作原型</p>
+        <h1 class="archetype-title" id="archetype-title"></h1>
+        <p class="archetype-sub" id="archetype-sub"></p>
+        <div class="match-pill"><span id="match-label">综合匹配度</span> <strong id="match-pct">—</strong></div>
+      </div>
+
+      <div class="grid-2">
+        <article class="card">
+          <h3>四轴雷达</h3>
+          <div class="radar-wrap">
+            <svg id="radar" viewBox="0 0 200 200" aria-label="四维度雷达图"></svg>
+          </div>
+          <ul class="dim-list" id="dim-list"></ul>
+        </article>
+        <article class="card">
+          <h3>系统备注</h3>
+          <p class="remark" id="remark"></p>
+          <h3 class="mt">优先补强</h3>
+          <ul class="tips" id="tips"></ul>
+        </article>
+      </div>
+
+      <article class="card wide">
+        <h3>可与学习系统对齐的行动清单</h3>
+        <ol class="actions" id="actions"></ol>
+      </article>
+
+      <div class="share-row">
+        <button type="button" class="btn primary" id="btn-copy">复制结果摘要</button>
+        <button type="button" class="btn ghost" id="btn-retry">重新扫描</button>
+      </div>
+      <p class="disclaimer">
+        仅供自我反思与教学娱乐，不构成职业测评或投资建议。真正的能力在持续练习里长出来。
+      </p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>AIRADAR · 静态页可部署至 Cloudflare Pages / GitHub Pages</span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
