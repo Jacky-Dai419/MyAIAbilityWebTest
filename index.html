@@ -64,12 +64,20 @@
 
       <article class="share-snapshot" id="share-snapshot" aria-label="可截图分享的报告卡">
         <header class="share-snapshot__head">
-          <span class="share-snapshot__brand">AIRADAR</span>
-          <span class="share-snapshot__badge" id="share-date"></span>
+          <div class="share-snapshot__brand-row">
+            <span class="share-snapshot__brand">AIRADAR</span>
+            <span class="share-snapshot__divider" aria-hidden="true"></span>
+            <span class="share-snapshot__subtitle">协作力快照</span>
+          </div>
+          <time class="share-snapshot__badge" id="share-date"></time>
         </header>
         <h2 class="share-snapshot__title" id="share-archetype"></h2>
+        <p class="share-snapshot__lead" id="share-sub"></p>
         <p class="share-snapshot__hook" id="share-hook"></p>
+        <p class="share-snapshot__match"><span class="share-snapshot__match-label">原型匹配度</span> <strong id="share-match">—</strong></p>
+        <p class="share-snapshot__viz-label">四轴得分</p>
         <div class="share-snapshot__scores" id="share-scores"></div>
+        <p class="share-snapshot__tag-label">关键词</p>
         <div class="share-snapshot__tags" id="share-tags"></div>
         <p class="share-snapshot__foot">仅供学习娱乐与自我反思 · 非职业测评</p>
       </article>
@@ -84,42 +92,67 @@
       </div>
 
       <article class="card insight-card">
-        <h3>洞察：你当下的协作特征</h3>
-        <p class="insight-deep" id="insight-deep"></p>
+        <header class="card-heading">
+          <span class="card-heading__mark" aria-hidden="true"></span>
+          <div class="card-heading__text">
+            <h3>洞察 · 你当下的协作特征</h3>
+            <p class="card-heading__sub">将长段分析拆成导语与要点，方便扫读</p>
+          </div>
+        </header>
+        <div class="insight-body" id="insight-body"></div>
       </article>
 
-      <div class="grid-2">
-        <article class="card viz-card">
-          <h3>四轴雷达</h3>
-          <div class="radar-wrap">
-            <svg id="radar" viewBox="0 0 200 200" aria-label="四维度雷达图"></svg>
+      <div class="viz-panel card">
+        <header class="viz-panel__head">
+          <h3 class="viz-panel__title">四轴可视化</h3>
+          <p class="viz-panel__desc">雷达看结构平衡，条形图看单项强弱</p>
+        </header>
+        <div class="grid-2 viz-panel__grid">
+          <div class="viz-block">
+            <p class="viz-block__label"><span class="viz-block__dot"></span>结构雷达</p>
+            <div class="viz-frame radar-wrap">
+              <svg id="radar" viewBox="0 0 200 200" aria-label="四维度雷达图"></svg>
+            </div>
           </div>
-        </article>
-        <article class="card viz-card">
-          <h3>四轴得分</h3>
-          <div class="bars" id="bars" aria-label="四维度条形图"></div>
-          <ul class="dim-list" id="dim-list"></ul>
-        </article>
+          <div class="viz-block">
+            <p class="viz-block__label"><span class="viz-block__dot viz-block__dot--alt"></span>得分条形图</p>
+            <div class="bars" id="bars" aria-label="四维度条形图"></div>
+            <ul class="dim-list" id="dim-list"></ul>
+          </div>
+        </div>
       </div>
 
-      <article class="card wide">
-        <h3>各维度一句话画像</h3>
+      <article class="card wide narrative-panel">
+        <header class="card-heading card-heading--compact">
+          <span class="card-heading__mark card-heading__mark--soft" aria-hidden="true"></span>
+          <div class="card-heading__text">
+            <h3>各维度画像</h3>
+            <p class="card-heading__sub">每一分都配一句解读，便于对照反思</p>
+          </div>
+        </header>
         <ul class="dim-narratives" id="dim-narratives"></ul>
       </article>
 
       <div class="grid-2">
-        <article class="card">
-          <h3>优先补强</h3>
+        <article class="card card--accent">
+          <h3 class="card__title-inline"><span class="title-num">01</span>优先补强</h3>
+          <p class="card__hint">针对得分相对较低的两维，各给一条可执行建议</p>
           <ul class="tips" id="tips"></ul>
         </article>
-        <article class="card">
-          <h3>系统备注</h3>
-          <p class="remark" id="remark"></p>
+        <article class="card card--note">
+          <h3 class="card__title-inline"><span class="title-num title-num--muted">02</span>系统备注</h3>
+          <p class="card__hint">长板与短板并重，避免只「盯缺点」</p>
+          <div class="remark" id="remark"></div>
         </article>
       </div>
 
-      <article class="card wide">
-        <h3>可与学习系统对齐的行动清单</h3>
+      <article class="card wide action-panel">
+        <header class="card-heading card-heading--compact">
+          <div class="card-heading__text">
+            <h3>行动清单</h3>
+            <p class="card-heading__sub">可与你的学习系统、课程或复盘表对齐</p>
+          </div>
+        </header>
         <ol class="actions" id="actions"></ol>
       </article>
 

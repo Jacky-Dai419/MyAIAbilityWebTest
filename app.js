@@ -196,6 +196,13 @@
     return map[k];
   }
 
+  /** 去掉「某某维度偏低：」式前缀，避免与卡片标题重复 */
+  function narrativeBodyOnly(k, v) {
+    const t = dimensionNarrative(k, v);
+    const i = t.indexOf("：");
+    return i >= 0 ? t.slice(i + 1) : t;
+  }
+
   function clamp(n, a, b) {
     return Math.max(a, Math.min(b, n));
   }
@@ -309,7 +316,7 @@
     keys.forEach((k) => {
       const row = document.createElement("div");
       row.className = "bar-row";
-      row.innerHTML = `<span>${DIMENSIONS[k].short}</span><div class="bar-track"><div class="bar-fill" style="width:0%"></div></div><span>${scores[k]}</span>`;
+      row.innerHTML = `<span class="bar-row__dim">${DIMENSIONS[k].short}</span><div class="bar-track"><div class="bar-fill" style="width:0%"></div></div><span class="bar-row__num">${scores[k]}</span>`;
       el.appendChild(row);
       requestAnimationFrame(() => {
         row.querySelector(".bar-fill").style.width = scores[k] + "%";
@@ -323,6 +330,22 @@
     const m = String(t.getMonth() + 1).padStart(2, "0");
     const d = String(t.getDate()).padStart(2, "0");
     return `${y}-${m}-${d}`;
+  }
+
+  /** 将长洞察拆成「导语 + 分段正文」，便于排版扫读 */
+  function formatInsightHTML(text) {
+    const sentences = text
+      .split("。")
+      .map((s) => s.trim())
+      .filter(Boolean)
+      .map((s) => s + "。");
+    if (!sentences.length) return "";
+    const [lead, ...rest] = sentences;
+    let html = `<p class="insight-lead">${lead}</p>`;
+    rest.forEach((p) => {
+      html += `<p class="insight-para">${p}</p>`;
+    });
+    return html;
   }
 
   const views = {
@@ -421,11 +444,13 @@
     document.getElementById("archetype-title").textContent = arch.title;
     document.getElementById("archetype-sub").textContent = arch.sub;
     document.getElementById("match-pct").textContent = clamp(arch.match, 52, 97) + "%";
-    document.getElementById("insight-deep").textContent = arch.deepInsight;
+    document.getElementById("insight-body").innerHTML = formatInsightHTML(arch.deepInsight);
 
     document.getElementById("share-date").textContent = formatShareDate();
     document.getElementById("share-archetype").textContent = arch.title;
+    document.getElementById("share-sub").textContent = arch.sub;
     document.getElementById("share-hook").textContent = arch.hook;
+    document.getElementById("share-match").textContent = clamp(arch.match, 52, 97) + "%";
 
     const shareScores = document.getElementById("share-scores");
     shareScores.innerHTML = "";
@@ -448,14 +473,26 @@
     const weak = weakestDims(scores);
     const weakLabels = weak.map((k) => DIMENSIONS[k].label).join("、");
     const strong = Object.entries(scores).sort((a, b) => b[1] - a[1])[0];
-    document.getElementById("remark").textContent =
-      `当前最突出的维度是「${DIMENSIONS[strong[0]].label}」（${strong[1]}）。相对更需要刻意练习的是「${weakLabels}」。这不代表你弱，而表示下一阶段性价比最高的投入方向——先补短板，再把长板做成可教别人的方法。`;
+    const strongLabel = DIMENSIONS[strong[0]].label;
+    const strongScore = strong[1];
+    document.getElementById("remark").innerHTML = `
+      <div class="remark-stack">
+        <div class="remark-block remark-block--up">
+          <span class="remark-block__tag">相对优势</span>
+          <p class="remark-block__text">当前最突出的是「${strongLabel}」<strong>${strongScore}</strong> 分。这是你最容易做出「像样的交付」、也最容易被他人感知到的长板。</p>
+        </div>
+        <div class="remark-block remark-block--focus">
+          <span class="remark-block__tag">投入焦点</span>
+          <p class="remark-block__text">相对更需要刻意练习的是「${weakLabels}」。这不代表「弱」，而表示下一阶段<strong>性价比最高</strong>的学习可以朝这里倾斜：先补短板，再把长板总结成可教别人的方法。</p>
+        </div>
+      </div>`;
 
     const tipsEl = document.getElementById("tips");
     tipsEl.innerHTML = "";
     weak.forEach((k) => {
       const li = document.createElement("li");
-      li.textContent = `${DIMENSIONS[k].label}：${RECOMMEND[k][0]}`;
+      li.className = "tip-item";
+      li.innerHTML = `<span class="tip-item__dim">${DIMENSIONS[k].label}</span><p class="tip-item__text">${RECOMMEND[k][0]}</p>`;
       tipsEl.appendChild(li);
     });
 
@@ -463,7 +500,8 @@
     narratives.innerHTML = "";
     ["cognition", "practice", "domain", "habit"].forEach((k) => {
       const li = document.createElement("li");
-      li.innerHTML = `<strong>${DIMENSIONS[k].label}（${scores[k]}）</strong> ${dimensionNarrative(k, scores[k])}`;
+      li.className = "narrative-item";
+      li.innerHTML = `<div class="narrative-item__head"><span class="narrative-item__name">${DIMENSIONS[k].label}</span><span class="narrative-item__score">${scores[k]}</span></div><p class="narrative-item__body">${narrativeBodyOnly(k, scores[k])}</p>`;
       narratives.appendChild(li);
     });
 
