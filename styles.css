@@ -88,6 +88,23 @@ body {
   color: var(--orange-700);
 }
 
+.top-links {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.nav-link {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--orange-700);
+  text-decoration: none;
+}
+
+.nav-link:hover {
+  color: var(--orange-600);
+}
+
 .tagline {
   font-size: 0.8rem;
   color: var(--muted);
